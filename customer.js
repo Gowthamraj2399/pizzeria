@@ -1,25 +1,34 @@
 //Pizzeria - Pizza Delivery App 
 
 
-//Redirect based on the user type
-function login() {
-    console.log('Logged in');
-}
+var usersData = [];
+var currentUser = {}
+var menuData = [];
 
-//View the menu
-function getMenu() {
-    console.log('Getting all the menu and listing the menu');
-}
 
-//Select the items from the menu
-function selectItems() {
-    console.log('Select items from the menu ');
-}
+function main(){}
 
-//selected items goes to the cart
-function addToCart() {
-    console.log('Add the selected items to cart');
-}
+function login() {}
+
+function getMenu() {}
+
+function selectItems() {}
+
+function addToCart() {}
+
+function placeOrder() {}
+
+function getOrderStatus() {}
+
+function getOrderHistory(){}
+
+
+/////////////////////////////////////////////////////////////////////
+
+
+var currentUser = {};
+
+function main(){}
 
 //Confirm the order
 function placeOrder() {
@@ -35,3 +44,17 @@ function getOrderStatus() {
 function getOrderHistory(){
     console.log('Get the privious order placed')
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
