@@ -14,21 +14,27 @@
             id: usersData.length + 1,
             name: username,
             password: password,
+            userType: 0
         }
         users.setUser(newUser);
         return 'Your profile has been created successfully';
     }
     var login = function(username, password) {
-        for(var i = 0; i<usersData.length; i++) {
-            if(usersData[i].name === username && usersData[i].password === password)  {
-                currentUser = usersData[i]
+        if(currentUser === null) {
+            for(var i = 0; i<usersData.length; i++) {
+                if(usersData[i].name === username && usersData[i].password === password)  {
+                    currentUser = usersData[i]
+                }
             }
-        }
-        if(currentUser){
-            return 'You are logged in';
+            if(currentUser){
+                return 'You are logged in';
+            } else {
+                return 'Please check your username and password';
+            }
         } else {
-            return 'Please check your username and password';
+            return 'Please signout to continue'
         }
+        
     }
 
     var getCurrentUser = function() {

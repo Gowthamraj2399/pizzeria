@@ -6,6 +6,12 @@
             id: 1,
             name: 'gowtham',
             password: 'hello',
+            userType: 0
+        }, {
+            id: 1,
+            name: 'admin',
+            password: 'admin',
+            userType: 1
         }
     ]
     var getUsers = function() {
