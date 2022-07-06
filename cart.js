@@ -28,93 +28,89 @@
 
   var showCart = function () {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        if (CART[currentUser].items.length > 0) {
-          return CART[currentUser];
-        } else {
-          return "Your cart is empty";
-        }
+    if (!auth) {
+      return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      if (CART[currentUser].items.length > 0) {
+        return CART[currentUser];
       } else {
-        return "Admin has no permission to this page";
+        return "Your cart is empty";
       }
     } else {
-      return "Please signin to continue";
+      return "Admin has no permission to this page";
     }
   };
 
   var addToCart = function (itemId) {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        var item;
-        for (var a = 0; a < menuData.length; a++) {
-          if (menuData[a].id === itemId) {
-            item = menuData[a];
-          }
+    if (!auth) {
+      return "Please signin to continue";
+    }
+
+    if (!isAdmin) {
+      var item;
+      for (var a = 0; a < menuData.length; a++) {
+        if (menuData[a].id === itemId) {
+          item = menuData[a];
         }
-        if (item) {
-          CART[currentUser].items.push(item);
-          CART[currentUser].itemTotal =
-            CART[currentUser].itemTotal + item.price;
-          return "Item Added to Cart";
-        } else {
-          return "Invalid Item";
-        }
+      }
+      if (item) {
+        CART[currentUser].items.push(item);
+        CART[currentUser].itemTotal = CART[currentUser].itemTotal + item.price;
+        return "Item Added to Cart";
       } else {
-        return "Admin has no permission to this page";
+        return "Invalid Item";
       }
     } else {
-      return "Please signin to continue";
+      return "Admin has no permission to this page";
     }
   };
 
   var removeFromCart = function (itemId) {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        var itemIndex = null;
-        var item;
+    if (!auth) {
+      return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      var itemIndex = null;
+      var item;
 
-        for (var i = 0; i < CART[currentUser].items.length; i++) {
-          if (CART[currentUser].items[i].id === itemId) {
-            itemIndex = i;
-            item = CART[currentUser].items[i];
-          }
+      for (var i = 0; i < CART[currentUser].items.length; i++) {
+        if (CART[currentUser].items[i].id === itemId) {
+          itemIndex = i;
+          item = CART[currentUser].items[i];
         }
+      }
 
-        if (CART[currentUser].items.length > 0) {
-          if (itemIndex !== null) {
-            CART[currentUser].items.splice(itemIndex, 1);
-            CART[currentUser].itemTotal -= item.price;
-            return "Item removed successfully.";
-          } else {
-            return "Invalid Item id.";
-          }
+      if (CART[currentUser].items.length > 0) {
+        if (itemIndex !== null) {
+          CART[currentUser].items.splice(itemIndex, 1);
+          CART[currentUser].itemTotal -= item.price;
+          return "Item removed successfully.";
         } else {
-          return "Your cart is empty.";
+          return "Invalid Item id.";
         }
       } else {
-        return "Admin has no permission to this page";
+        return "Your cart is empty.";
       }
     } else {
-      return "Please signin to continue";
+      return "Admin has no permission to this page";
     }
   };
 
   var emptyCart = function () {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        CART[currentUser] = {
-          items: [],
-          itemTotal: null,
-        };
-      } else {
-        return "Admin has no permission to this page";
-      }
-    } else {
+    if (!auth) {
       return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      CART[currentUser] = {
+        items: [],
+        itemTotal: null,
+      };
+    } else {
+      return "Admin has no permission to this page";
     }
   };
 

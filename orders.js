@@ -23,109 +23,104 @@
 
   var getOrderHistory = function () {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        return ORDERS[currentUser];
-      } else {
-        return "Admin has no permission to this page";
-      }
-    } else {
+    if (!auth) {
       return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      return ORDERS[currentUser];
+    } else {
+      return "Admin has no permission to this page";
     }
   };
 
   var getCurrentOrders = function () {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        var currentOrders = [];
-        for (var j = 0; j < ORDERS[currentUser].length; j++) {
-          if (
-            ORDERS[currentUser][j].orderStatus !== "delivered" &&
-            ORDERS[currentUser][j].orderStatus !== "cancelled"
-          ) {
-            currentOrders.push(ORDERS[currentUser][j]);
-          }
+    if (!auth) {
+      return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      var currentOrders = [];
+      for (var j = 0; j < ORDERS[currentUser].length; j++) {
+        if (
+          ORDERS[currentUser][j].orderStatus !== "delivered" &&
+          ORDERS[currentUser][j].orderStatus !== "cancelled"
+        ) {
+          currentOrders.push(ORDERS[currentUser][j]);
         }
+      }
 
-        if (currentOrders.length > 0) {
-          return currentOrders;
-        } else {
-          return "There are no active orders.";
-        }
+      if (currentOrders.length > 0) {
+        return currentOrders;
       } else {
-        return "Admin has no permission to this page";
+        return "There are no active orders.";
       }
     } else {
-      return "Please signin to continue";
+      return "Admin has no permission to this page";
     }
   };
 
   var getAllOrders = function () {
     init();
-    if (auth) {
-      if (isAdmin) {
-        return ORDERS;
-      } else {
-        return "users has no permission to this page";
-      }
-    } else {
+    if (!auth) {
       return "Please signin to continue";
+    }
+    if (isAdmin) {
+      return ORDERS;
+    } else {
+      return "users has no permission to this page";
     }
   };
 
   var addOrder = function () {
     init();
-    if (auth) {
-      if (!isAdmin) {
-        var cartItems = cart.showCart();
-        if (cartItems.items.length > 0) {
-          var newOrder = {
-            id: ORDERS[currentUser].length + 1,
-            orderItems: cartItems.items,
-            orderTotal: cartItems.itemTotal,
-            orderStatus: "ordered",
-          };
-          ORDERS[currentUser].push(newOrder);
-          cart.emptyCart();
-          return "Order placed.";
-        } else {
-          return "There is no item in cart";
-        }
+    if (!auth) {
+      return "Please signin to continue";
+    }
+    if (!isAdmin) {
+      var cartItems = cart.showCart();
+      if (cartItems.items.length > 0) {
+        var newOrder = {
+          id: ORDERS[currentUser].length + 1,
+          orderItems: cartItems.items,
+          orderTotal: cartItems.itemTotal,
+          orderStatus: "ordered",
+        };
+        ORDERS[currentUser].push(newOrder);
+        cart.emptyCart();
+        return "Order placed.";
       } else {
-        return "Admin has no permission to this page";
+        return "There is no item in cart";
       }
     } else {
-      return "Please signin to continue";
+      return "Admin has no permission to this page";
     }
   };
 
   var changeOrderStatus = function (userName, orderId, status) {
     init();
-    if (auth) {
-      if (isAdmin) {
-        var orderIndex = null;
-        if (typeof ORDERS[userName] !== "undefined") {
-          for (var i = 0; i < ORDERS[userName].length; i++) {
-            if (ORDERS[userName][i].id === orderId) {
-              orderIndex = i;
-            }
+    if (!auth) {
+      return "Please signin to continue";
+    }
+    if (isAdmin) {
+      var orderIndex = null;
+      if (typeof ORDERS[userName] !== "undefined") {
+        for (var i = 0; i < ORDERS[userName].length; i++) {
+          if (ORDERS[userName][i].id === orderId) {
+            orderIndex = i;
           }
+        }
 
-          if (orderIndex !== null) {
-            ORDERS[userName][orderIndex].orderStatus = status;
-            return "Order status updated.";
-          } else {
-            return "Invalid order number.";
-          }
+        if (orderIndex !== null) {
+          ORDERS[userName][orderIndex].orderStatus = status;
+          return "Order status updated.";
         } else {
-          return "Invalid user details.";
+          return "Invalid order number.";
         }
       } else {
-        return "users has no permission to this page";
+        return "Invalid user details.";
       }
     } else {
-      return "Please signin to continue";
+      return "users has no permission to this page";
     }
   };
 
