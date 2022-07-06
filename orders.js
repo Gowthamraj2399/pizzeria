@@ -9,8 +9,10 @@
 
   var init = function () {
     auth = authentication.getCurrentUser();
-    currentUser = auth.name;
-    isAdmin = auth.userType === 0 ? false : true;
+    if (auth) {
+      currentUser = auth.name;
+      isAdmin = auth.userType === 0 ? false : true;
+    }
     if (!isAdmin) {
       if (typeof ORDERS[currentUser] === "undefined") {
         ORDERS[currentUser] = [];
@@ -59,7 +61,7 @@
     }
   };
 
-  var getAllOrders = function() {
+  var getAllOrders = function () {
     init();
     if (auth) {
       if (isAdmin) {
@@ -70,7 +72,7 @@
     } else {
       return "Please signin to continue";
     }
-  }
+  };
 
   var addOrder = function () {
     init();
@@ -85,6 +87,7 @@
             orderStatus: "ordered",
           };
           ORDERS[currentUser].push(newOrder);
+          cart.emptyCart();
           return "Order placed.";
         } else {
           return "There is no item in cart";
@@ -102,23 +105,22 @@
     if (auth) {
       if (isAdmin) {
         var orderIndex = null;
-        if(typeof ORDERS[userName] !== 'undefined') {
-        for (var i = 0; i < ORDERS[userName].length; i++) {
-          if (ORDERS[userName][i].id === orderId) {
-            orderIndex = i;
+        if (typeof ORDERS[userName] !== "undefined") {
+          for (var i = 0; i < ORDERS[userName].length; i++) {
+            if (ORDERS[userName][i].id === orderId) {
+              orderIndex = i;
+            }
           }
-        }
 
-        if (orderIndex !== null) {
-          ORDERS[userName][orderIndex].orderStatus = status;
-          return "Order status updated.";
+          if (orderIndex !== null) {
+            ORDERS[userName][orderIndex].orderStatus = status;
+            return "Order status updated.";
+          } else {
+            return "Invalid order number.";
+          }
         } else {
-          return "Invalid order number.";
+          return "Invalid user details.";
         }
-    } else
-    {
-        return "Invalid user details.";
-    }
       } else {
         return "users has no permission to this page";
       }
@@ -133,6 +135,6 @@
     getCurrentOrders: getCurrentOrders,
     addOrder: addOrder,
     changeOrderStatus: changeOrderStatus,
-    getAllOrders: getAllOrders
+    getAllOrders: getAllOrders,
   };
 });

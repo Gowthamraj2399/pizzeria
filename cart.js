@@ -10,8 +10,10 @@
 
   var init = function () {
     auth = authentication.getCurrentUser();
-    currentUser = auth.name;
-    isAdmin = auth.userType === 0 ? false : true;
+    if (auth) {
+      currentUser = auth.name;
+      isAdmin = auth.userType === 0 ? false : true;
+    }
 
     if (!isAdmin) {
       if (typeof CART[currentUser] === "undefined") {
@@ -28,7 +30,11 @@
     init();
     if (auth) {
       if (!isAdmin) {
-        return CART[currentUser];
+        if (CART[currentUser].items.length > 0) {
+          return CART[currentUser];
+        } else {
+          return "Your cart is empty";
+        }
       } else {
         return "Admin has no permission to this page";
       }
@@ -96,9 +102,26 @@
     }
   };
 
+  var emptyCart = function () {
+    init();
+    if (auth) {
+      if (!isAdmin) {
+        CART[currentUser] = {
+          items: [],
+          itemTotal: null,
+        };
+      } else {
+        return "Admin has no permission to this page";
+      }
+    } else {
+      return "Please signin to continue";
+    }
+  };
+
   return {
     addToCart: addToCart,
     removeFromCart: removeFromCart,
     showCart: showCart,
+    emptyCart: emptyCart,
   };
 });
